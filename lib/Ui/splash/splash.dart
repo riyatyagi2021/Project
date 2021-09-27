@@ -37,6 +37,7 @@ class SplashScreenState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
+
         height: double.infinity,
         width: double.infinity,
         child:Image.asset('assets/images/cl.jpeg',fit: BoxFit.cover,)

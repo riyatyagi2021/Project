@@ -3,7 +3,7 @@ abstract class LoginEvent {}
 
 class EmailEvent extends LoginEvent {
   late String email;
-  EmailEvent(this.email);
+  EmailEvent(this.email,);
 }
 
 

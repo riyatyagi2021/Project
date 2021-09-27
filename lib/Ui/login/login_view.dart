@@ -2,26 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:project/Ui/home/home_view.dart';
 import 'package:project/Ui/login/login_bloc.dart';
 import 'package:project/Ui/login/login_event.dart';
 import 'package:project/Ui/login/login_state.dart';
 import 'package:project/Ui/signup/signup_view.dart';
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home:  BlocProvider<LoginBloc>(
-          create: (context)=> LoginBloc(),child: Login()),
-    );
-  }
-}
-
 
 
 class Login extends StatefulWidget {
@@ -35,21 +20,33 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
+
+  gotoHomepage(){
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => Home()),
+    );
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     final LoginBloc loginbloc=BlocProvider.of<LoginBloc>(context);
     return Scaffold(
-      body: BlocBuilder<LoginBloc,LoginState>(
-          bloc: LoginBloc(),
+      body: BlocBuilder<LoginBloc, LoginState>(
+
           builder: (context,state){
         if(state.isSuccess){
-          Fluttertoast.showToast(msg: "successful");
+          Fluttertoast.showToast(msg: "successful",toastLength: Toast.LENGTH_SHORT);
         }
         return Center(
           child: Container(
             height: 750,
             width: 360,
+            color: Colors.grey,
             child: Container(
+             // color: Colors.blueGrey,
               margin: EdgeInsets.fromLTRB(20, 80, 20, 60),
               height: 200,
               width: 260,
@@ -62,7 +59,7 @@ class _LoginState extends State<Login> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 100.0),
+                          padding: const EdgeInsets.only(top: 70.0),
                           child: Text('Login Here',style: TextStyle(
                               fontSize: 30,fontWeight: FontWeight.bold,color: Colors.black
                           ),),
@@ -71,13 +68,11 @@ class _LoginState extends State<Login> {
                           margin: EdgeInsets.symmetric(horizontal: 50,vertical: 50),
                           child: TextField(
                            onChanged: (String email) => loginbloc.add(EmailEvent(email)),
-                            onSubmitted: (_){
-                             // loginbloc.add()
-                            },
+
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
+                               // borderRadius: BorderRadius.circular(20),
                               ),
                               labelText: 'Email',
                               hintText: 'Enter Your Email',
@@ -87,6 +82,8 @@ class _LoginState extends State<Login> {
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 50,vertical: 5),
                           child: TextField(
+                            onChanged: (String password) => loginbloc.add(PasswordEvent(password)),
+                            onSubmitted: (_){},
                             obscureText: true,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
@@ -103,11 +100,12 @@ class _LoginState extends State<Login> {
                                 textColor: Colors.white,
                                 color: Colors.blue,
                                 child: Text('Login'),
-                                onPressed: null,
+                               onPressed: state.isSuccess ? gotoHomepage : null,
+
                                /* onPressed: (){
                                   Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(builder: (context) => PageSecond()),
+                                    MaterialPageRoute(builder: (context) => Home()),
                                   );
                                 },*/
                               ),
